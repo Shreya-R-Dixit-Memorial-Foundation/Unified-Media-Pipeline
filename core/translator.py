@@ -54,6 +54,7 @@ class ContentTranslator:
         SYSTEM: You are a professional translator for sensitive and empathetic storytelling.
         TASK: Translate the text below into {target_lang}.
         - {quote_instr}
+        - IMPORTANT: Preserve ALL [bracketed audio tags] like [chuckle], [pause], etc. in their exact positions.
         - Use a somber, respectful, and emotionally grounded tone.
         - Return ONLY the translated text, no introductory or conversational filler.
         
@@ -73,27 +74,33 @@ class ContentTranslator:
 
     def add_emotion_tags(self, raw_text):
         """Uses LLM to analyze dialogue and add emotion/voice modulation tags."""
-        print("🤖 Analyzing dialogue for emotion tags...")
+        print("🤖 Analyzing dialogue for precise emotion tags...")
         
         prompt = f"""
-        You are an expert dialogue annotation specialist for TTS synthesis.
-        Analyze the script and add bracketed tags like [chuckle], [sobbing], [pause], [breath] naturally.
-        Distinguish between NARRATOR and CHARACTERS (e.g., Speaker1, Speaker2).
+        You are an expert scriptwriter for natural human dialogue.
+        Analyze the script and add SPARSE, realistic bracketed audio tags.
         
-        RULES:
-        1. Keep sound effects like <breath>, <pause> if already present.
-        2. Preserve ALL original text.
-        3. Output ONLY the annotated script.
+        CRITICAL RULES:
+        1. [breath]: Only place at the START of a speaking turn or before a very long sentence.
+        2. [pause]: Only place between sentences or after a person is interrupted.
+        3. [sigh], [chuckle], [gasp]: Only place if the context clearly justifies it (e.g., after bad news or a joke).
+        4. DO NOT over-tag. Too many tags make it sound unnatural.
+        5. DO NOT change the existing text content.
         
         SCRIPT:
         {raw_text}
+        
+        Output ONLY the annotated script with minimal, logical emotional tags.
         """
         
         try:
             completion = self.client.chat.completions.create(
                 model="llama-3.3-70b-versatile",
-                messages=[{"role": "user", "content": prompt}],
-                temperature=0.7
+                messages=[
+                    {"role": "system", "content": "You are an expert dialogue annotation specialist using tags SPARINGLY and LOGICALLY."},
+                    {"role": "user", "content": prompt}
+                ],
+                temperature=0.1 # Lower temperature for consistency and precision
             )
             return completion.choices[0].message.content.strip()
         except Exception as e:
