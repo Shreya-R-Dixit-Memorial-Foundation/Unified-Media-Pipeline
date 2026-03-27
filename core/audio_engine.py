@@ -94,6 +94,11 @@ class AudioEngine:
                     break 
                 except Exception as e:
                     print(f"⚠️  Attempt {attempt+1} failed for Part {i+1}: {e}")
+                    if attempt < 2: 
+                        print(f"🔄 Retrying Part {i+1} (Attempt {attempt+2})...")
+                    else:
+                        print(f"❌ Part {i+1} failed completely after 3 attempts.")
+                        break
             
             if not success:
                 print(f"❌ ERROR: Part {i+1} failed completely.")
