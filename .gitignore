@@ -1,0 +1,19 @@
+# Environment Variables
+.env
+
+# Generated Output Files
+outputs/
+*.mp3
+*.mp4
+*.json
+
+# Python Cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Temporary Files
+chunk_*.mp3
+list.txt
+temp.py

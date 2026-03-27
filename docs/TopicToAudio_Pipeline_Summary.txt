@@ -1,0 +1,5 @@
+The TopicToAudio pipeline is an interactive script that transforms user-provided topics into engaging audio content. It begins by prompting the user for a topic and choosing between a monologue or dialogue mode. Using Groq's Llama model, it generates an emotionally rich script with audio tags (e.g., [chuckle], [pause]) for natural delivery, ensuring 150-280 words suitable for 1-2 minute audio, and appends 2-3 neutral statistics for realism.
+
+The script enters a review loop where users can approve ("ok"), edit for changes, or translate to another language while preserving format. Once finalized, ElevenLabs API converts the text to speech using a high-quality voice (ID: H6QPv2pQZDcGqLwDTIJQ) with optimized settings for stability, similarity, and style. The output is saved as an MP3 file named after the sanitized topic.
+
+This pipeline integrates AI scripting, user feedback, and TTS technology to produce podcast-ready audio efficiently, emphasizing humane, grounded tones. (148 words)
